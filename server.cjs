@@ -1,10 +1,12 @@
 const express =require('express')
-const bodyParser=require('body-parser')
-const {connectoDB,getDB} = require('./dbconnection.js')
+const cors =require('cors')
 
+const {connectoDB,getDB}=require('./dbconnection.js')
+const bodyParser=require('body-parser')
 const {ObjectId} = require('mongodb')
 
 const app=express()
+app.use(cors())
 app.use(bodyParser.json())
 
 let db
@@ -15,9 +17,10 @@ connectoDB(function (error) {
         }
 
     else{
-        app.listen(8000)
+        const port=process.env.PORT || 8000
+        app.listen(port)
         db=getDB()
-        console.log('Listening on port 8000...')
+        console.log(`Listening on port ${port}...`)
     }
 })
 
